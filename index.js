@@ -71,8 +71,31 @@ const data = {
       // </div>
 
 const App = () => {
-  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
-  const [canvasUrl, setCanvasUrl] = useState("");
+  const [excalidrawAPI, setExcalidrawAPI] = React.useState(null);
+  const [canvasUrl, setCanvasUrl] = React.useState("");
+
+  const render = async () => {
+      if (!excalidrawAPI) {
+        return
+      }
+      const elements = excalidrawAPI.getSceneElements();
+      if (!elements || !elements.length) {
+        return
+      }
+      const canvas = await ExcalidrawLib.exportToCanvas({
+        elements,
+        appState: {
+          ...data.appState,
+          exportWithDarkMode: false,
+        },
+        files: excalidrawAPI.getFiles(),
+        // getDimensions: () => { return {width: 800, height: 350}}
+      });
+      // const ctx = canvas.getContext("2d");
+      // ctx.font = "30px Virgil";
+      // ctx.strokeText("My custom text", 50, 60);
+      setCanvasUrl(canvas.toDataURL());
+  }
 
   return React.createElement(
     React.Fragment,
@@ -83,9 +106,24 @@ const App = () => {
         style: { height: "500px" },
       },
       React.createElement(ExcalidrawLib.Excalidraw, {
-        initialData: data
+        initialData: data,
+        ref: (api) => setExcalidrawAPI(api),
       }),
     ),
+    React.createElement(
+      "div",
+        {
+            id: "img",
+        },
+        canvasUrl,
+    ),
+    React.createElement(
+        "button",
+        {
+            onClick: render,
+            id: "render_button",
+        },
+    )
   );
 };
 
