@@ -8,7 +8,7 @@ const stream = require('stream');
 app.get('/download', async (req, res) => {
     res.send('OK');
     // const dataUrl = req.params.dataUrl;
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.goto('http://google.com');
     res.send('OK Heroku');
