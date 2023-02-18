@@ -23,17 +23,20 @@ app.get('/download', async (req, res) => {
 
     await page.evaluate((d) => document.querySelector("#data_input").value = d, JSON.stringify(req.body));
     await page.type('#data_input', ' ');
+    await new Promise(r => setTimeout(r, 250));
+    await page.click('.scroll-back-to-content');
+    await new Promise(r => setTimeout(r, 250));
     await page.click('#render_button');
 
     let element = await page.$('#img');
     let value = await element.evaluate(el => el.textContent);
-    // await new Promise(r => setTimeout(r, 30000));
-
     const buffer = await page.screenshot({
-        type: 'png',
-        quality: 100,
-        // omitBackground: true,
+        // type: 'png',
+        // quality: 100,
+        // // omitBackground: true,
     });
+
+    // await new Promise(r => setTimeout(r, 30000));
 
     browser.close();
 
