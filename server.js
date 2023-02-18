@@ -13,7 +13,7 @@ app.get('/test', async (req, res) => {
 app.get('/download', async (req, res) => {
     console.log('This is something');
     // const dataUrl = req.params.dataUrl;
-    // const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     // const page = await browser.newPage();
     // await page.goto('http://google.com');
     res.send('OK Heroku');
