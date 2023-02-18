@@ -75,7 +75,13 @@ const App = () => {
             onClick: render,
             id: "render_button",
         },
-    )
+    ),
+  React.createElement(
+      "img",
+    {
+        src: canvasUrl,
+    }
+  )
   );
 };
 
