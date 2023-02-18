@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const path = require('path');
-const puppeteer = require("puppeteer");
+// const puppeteer = require("puppeteer");
 const stream = require('stream');
 
 app.get('/test', async (req, res) => {
@@ -12,9 +12,9 @@ app.get('/test', async (req, res) => {
 app.get('/download', async (req, res) => {
     console.log('This is something');
     // const dataUrl = req.params.dataUrl;
-    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-    const page = await browser.newPage();
-    await page.goto('http://google.com');
+    // const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+    // const page = await browser.newPage();
+    // await page.goto('http://google.com');
     res.send('OK Heroku');
     // await page.goto('file:///Users/jmcgill/src/excalirender/index.html');
     // await page.click('#render_button');
