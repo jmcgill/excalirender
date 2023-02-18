@@ -6,7 +6,7 @@ const path = require('path');
 const stream = require('stream');
 
 app.get('/download', async (req, res) => {
-    res.send('OK');
+    console.log('This is something');
     // const dataUrl = req.params.dataUrl;
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
