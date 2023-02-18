@@ -14,9 +14,15 @@ app.get('/download', async (req, res) => {
     console.log('This is something');
     // const dataUrl = req.params.dataUrl;
     const browser = await puppeteer.launch({ args: ['--no-sandbox', "--disable-setuid-sandbox"] });
-    // const page = await browser.newPage();
-    // await page.goto('http://google.com');
-    res.send('OK Heroku');
+    const page = await browser.newPage();
+    await page.goto('https://plexer.net');
+
+    await page.waitForSelector('.big-title')
+    const element = await page.$('.big-title')
+    const value = await page.evaluate(el => el.textContent, element);
+
+    res.send(value);
+
     // await page.goto('file:///Users/jmcgill/src/excalirender/index.html');
     // await page.click('#render_button');
     //
