@@ -29,7 +29,7 @@ app.get('/download', async (req, res) => {
     let value = await element.evaluate(el => el.textContent);
     // await new Promise(r => setTimeout(r, 30000));
 
-    const imageBuffer = await page.screenshot({
+    const buffer = await page.screenshot({
         type: 'png',
         quality: 100,
         // omitBackground: true,
