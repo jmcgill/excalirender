@@ -10,36 +10,38 @@ app.use(express.json())
 const options = {
     max: 500,
 
-    // for use with tracking overall storage size
-    maxSize: 5000,
-    sizeCalculation: (value, key) => {
-        return 1
-    },
+    // 256 MB Cache
+    maxSize: 256 * 1025 * 1024,
 
-    // for use when you need to clean up something when objects
-    // are evicted from the cache
-    dispose: (value, key) => {
-        freeFromMemoryOrWhatever(value)
+    sizeCalculation: (value, key) => {
+        return value.length;
     },
 
     // how long to live in ms
-    ttl: 1000 * 60 * 5,
+    // ttl: 1000 * 60 * 5,
 
-    // return stale items before removing from cache?
-    allowStale: false,
-
-    updateAgeOnGet: false,
-    updateAgeOnHas: false,
+    // allowStale: false,
+    // updateAgeOnGet: false,
+    // updateAgeOnHas: false,
 
     // async method to use for cache.fetch(), for
     // stale-while-revalidate type of behavior
-    fetchMethod: async (key, staleValue, { options, signal }) => {},
+    // fetchMethod: async (key, staleValue, { options, signal }) => {},
 }
 
 const cache = new LRUCache(options)
 
 app.post('/render', async (req, res) => {
-    console.log('This is something');
+    const key = JSON.stringify(req.body);
+    const result = cache.get(key);
+    if (result) {
+        Buffer.from(result, 'base64');
+        const readStream = new stream.PassThrough();
+        readStream.end(buffer);
+        res.set('Content-Type', 'image/x-png');
+        readStream.pipe(res);
+    }
+
     // const dataUrl = req.params.dataUrl;
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', "--disable-setuid-sandbox"],
@@ -66,6 +68,8 @@ app.post('/render', async (req, res) => {
     const matches = value.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
     const imageData = matches[2];
     const buffer = Buffer.from(imageData, 'base64');
+
+    cache.set(key, buffer.toString('base64'));
 
     const readStream = new stream.PassThrough();
     readStream.end(buffer);
