@@ -29,14 +29,18 @@ app.get('/download', async (req, res) => {
     let value = await element.evaluate(el => el.textContent);
     // await new Promise(r => setTimeout(r, 30000));
 
+    const imageBuffer = await page.screenshot({
+        type: 'png',
+        quality: 100,
+        // omitBackground: true,
+    });
+
     browser.close();
 
-    const matches = value.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-    // const imageExtension = matches[1].split('/')[1];
-    const imageData = matches[2];
-    const buffer = Buffer.from(imageData, 'base64');
-    // const filename = `${Date.now()}.${imageExtension}`;
-    // var fileContents = Buffer.from(fileData, "base64");
+    // const matches = value.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+
+    // const imageData = matches[2];
+    // const buffer = Buffer.from(imageData, 'base64');
 
     var readStream = new stream.PassThrough();
     readStream.end(buffer);
