@@ -39,7 +39,9 @@ app.post('/render', async (req, res) => {
         const readStream = new stream.PassThrough();
         readStream.end(buffer);
         res.set('Content-Type', 'image/x-png');
+        res.set('X-Served-From', 'cache');
         readStream.pipe(res);
+        return;
     }
 
     // const dataUrl = req.params.dataUrl;
