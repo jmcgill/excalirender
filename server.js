@@ -5,6 +5,10 @@ const path = require('path');
 const puppeteer = require("puppeteer");
 const stream = require('stream');
 
+app.get('/test', async (req, res) => {
+    res.send('OK TEST');
+
+}
 app.get('/download', async (req, res) => {
     console.log('This is something');
     // const dataUrl = req.params.dataUrl;
