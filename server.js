@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const path = require('path');
-// const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer");
 const stream = require('stream');
 
 app.get('/download', async (req, res) => {
