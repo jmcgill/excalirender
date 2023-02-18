@@ -16,7 +16,7 @@ app.get('/download', async (req, res) => {
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', "--disable-setuid-sandbox"],
         ignoreHTTPSErrors: true,
-        headless: false
+        // headless: false
     });
     const page = await browser.newPage();
     await page.goto('file://' + path.join(__dirname, 'index.html'));
