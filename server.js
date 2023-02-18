@@ -1,33 +1,33 @@
 const express = require('express');
 const app = express();
-const fs = require('fs');
 const path = require('path');
 const puppeteer = require("puppeteer");
 const stream = require('stream');
 
+app.use(express.json())
+
 app.get('/test', async (req, res) => {
     res.send('OK TEST');
-
 });
 
 app.get('/download', async (req, res) => {
     console.log('This is something');
     // const dataUrl = req.params.dataUrl;
-    const browser = await puppeteer.launch({ args: ['--no-sandbox', "--disable-setuid-sandbox"], ignoreHTTPSErrors: true });
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', "--disable-setuid-sandbox"],
+        ignoreHTTPSErrors: true,
+        // headless: false
+    });
     const page = await browser.newPage();
     await page.goto('file://' + path.join(__dirname, 'index.html'));
 
-    // await page.waitForSelector('.big-title')
-    // const element = await page.$('.big-title')
-    // const value = await page.evaluate(el => el.textContent, element);
-    //
-    // res.send(value);
-
-    await page.waitForSelector('#render_button');
+    await page.evaluate((d) => document.querySelector("#data_input").value = d, JSON.stringify(req.body));
+    await page.type('#data_input', ' ');
     await page.click('#render_button');
 
     let element = await page.$('#img');
     let value = await element.evaluate(el => el.textContent);
+    // await new Promise(r => setTimeout(r, 30000));
 
     browser.close();
 
