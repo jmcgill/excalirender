@@ -10,7 +10,7 @@ app.get('/test', async (req, res) => {
     res.send('OK TEST');
 });
 
-app.get('/download', async (req, res) => {
+app.post('/render', async (req, res) => {
     console.log('This is something');
     // const dataUrl = req.params.dataUrl;
     const browser = await puppeteer.launch({
@@ -27,21 +27,12 @@ app.get('/download', async (req, res) => {
     // Give content a moment to load
     await new Promise(r => setTimeout(r, 10));
     await page.click('.scroll-back-to-content');
-    // await new Promise(r => setTimeout(r, 250));
     await page.evaluateHandle('document.fonts.ready');
     await page.click('#render_button');
 
-    // await page.evaluateHandle('document.fonts.ready');
 
     let element = await page.$('#img');
     let value = await element.evaluate(el => el.textContent);
-    // const buffer = await page.screenshot({
-    //     // type: 'png',
-    //     // quality: 100,
-    //     // // omitBackground: true,
-    // });
-
-    // await new Promise(r => setTimeout(r, 30000));
 
     browser.close();
 
