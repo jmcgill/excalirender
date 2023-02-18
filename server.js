@@ -35,7 +35,7 @@ app.post('/render', async (req, res) => {
     const key = JSON.stringify(req.body);
     const result = cache.get(key);
     if (result) {
-        Buffer.from(result, 'base64');
+        const buffer = Buffer.from(result, 'base64');
         const readStream = new stream.PassThrough();
         readStream.end(buffer);
         res.set('Content-Type', 'image/x-png');
